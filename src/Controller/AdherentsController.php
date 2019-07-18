@@ -5,20 +5,24 @@ namespace App\Controller;
 
 
 use App\Entity\Adherents;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class AdherentsController extends AbstractFOSRestController
+class AdherentsController extends Controller
 {
-    /***ListsallAdherents.
-     *@Rest\Get("/adherents")
-     **@returnResponse*/
+    /**
+     *
+     *@Route("/adherents", name="adherents", methods={"GET"})
+     */
     public function getAdherents(){
+
         $repository=$this->getDoctrine()->getRepository(Adherents::class);
         $adherents=$repository->findall();
-        return$this->handleView($this->view($adherents));
+        $data = $this->get('jms_serializer')->serialize($adherents, 'json');
+        $response = new Response($data);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
     }
 }
