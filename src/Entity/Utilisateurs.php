@@ -33,6 +33,11 @@ class Utilisateurs implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $email;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,5 +109,17 @@ class Utilisateurs implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }
